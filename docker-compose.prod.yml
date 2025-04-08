@@ -21,7 +21,7 @@ services:
       retries: 5
 
   backend:
-    image: ghcr.io/berdjds/testing-docker-backend:latest
+    image: ghcr.io/gitaravenian/docker-master-test-backend:latest
     container_name: backend
     restart: unless-stopped
     environment:
@@ -41,7 +41,7 @@ services:
       retries: 3
 
   frontend:
-    image: ghcr.io/berdjds/testing-docker-frontend:latest
+    image: ghcr.io/gitaravenian/docker-master-test-frontend:latest
     container_name: frontend
     restart: unless-stopped
     environment:
