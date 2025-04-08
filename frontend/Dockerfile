@@ -23,7 +23,7 @@ WORKDIR /app
 
 # Environment variables
 ENV NODE_ENV=production
-ENV NEXT_PUBLIC_API_URL=/api
+ENV NEXT_PUBLIC_API_URL=http://89.116.25.109/api
 
 # Copy necessary files from builder
 COPY --from=builder /app/.next/standalone ./
