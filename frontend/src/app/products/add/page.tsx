@@ -16,7 +16,7 @@ export default function AddProductPage() {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/products/add", { name });
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/products/add`, { name });
       if (response.status === 201) {
         router.push("/products");
         router.refresh();
