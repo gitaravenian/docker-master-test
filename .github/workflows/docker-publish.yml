@@ -8,9 +8,9 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  OWNER: berdjds
-  BACKEND_IMAGE_NAME: ${{ github.repository_owner }}/testing-docker-backend
-  FRONTEND_IMAGE_NAME: ${{ github.repository_owner }}/testing-docker-frontend
+  OWNER: gitaravenian
+  BACKEND_IMAGE_NAME: ${{ github.repository_owner }}/docker-master-test-backend
+  FRONTEND_IMAGE_NAME: ${{ github.repository_owner }}/docker-master-test-frontend
 
 jobs:
   build:
