@@ -15,7 +15,7 @@ export default function ProductPage() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products`);
+      const response = await axios.get(`http://89.116.25.109/api/products`);
       if (response.status === 200) {
         setProducts(response.data);
       }
