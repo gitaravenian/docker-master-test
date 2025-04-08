@@ -111,8 +111,8 @@ testing-docker/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/berdjds/testing-docker.git
-   cd testing-docker
+   git clone https://github.com/gitaravenian/docker-master-test.git
+   cd docker-master-test
    ```
 
 2. **Set up environment variables**
@@ -350,14 +350,14 @@ To properly set up the production environment using `docker-compose.prod.yml`:
            with:
              context: ./backend
              push: true
-             tags: ghcr.io/berdjds/testing-docker-backend:latest
+             tags: ghcr.io/gitaravenian/docker-master-test-backend:latest
 
          - name: Build and push frontend
            uses: docker/build-push-action@v4
            with:
              context: ./frontend
              push: true
-             tags: ghcr.io/berdjds/testing-docker-frontend:latest
+             tags: ghcr.io/gitaravenian/docker-master-test-frontend:latest
    ```
 
 4. **Deploy to Production Server**:
@@ -366,8 +366,8 @@ To properly set up the production environment using `docker-compose.prod.yml`:
    ssh user@your-production-server
    
    # Clone the repository (if not already done)
-   git clone https://github.com/berdjds/testing-docker.git
-   cd testing-docker
+   git clone https://github.com/gitaravenian/docker-master-test.git
+   cd docker-master-test
    
    # Create the .env file with production values
    # (Use a secure method to transfer sensitive information)
@@ -507,7 +507,7 @@ git commit -m "Initial commit"
 
 # Create a GitHub repository through the GitHub website
 # Then add the remote repository
-git remote add origin https://github.com/yourusername/your-repo-name.git
+git remote add origin https://github.com/gitaravenian/docker-master-test.git
 
 # Push your code to GitHub
 git push -u origin main
@@ -517,8 +517,8 @@ If you're using an existing repository:
 
 ```bash
 # Clone the repository to your local machine
-git clone https://github.com/yourusername/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/gitaravenian/docker-master-test.git
+cd docker-master-test
 
 # Make changes as needed
 # ...
@@ -551,8 +551,8 @@ cd ~/myapps
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/gitaravenian/docker-master-test.git
+cd docker-master-test
 ```
 
 ##### 3.4. Clean Up Any Existing Docker Resources (if needed)
@@ -638,7 +638,7 @@ git push
 ssh username@your-vps-ip
 
 # Navigate to your application directory
-cd ~/myapps/your-repo-name
+cd ~/myapps/docker-master-test
 
 # Pull the latest changes
 git pull
@@ -673,7 +673,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/myapps/your-repo-name
+            cd ~/myapps/docker-master-test
             git pull
             docker-compose -f docker-compose.simple.yml up -d --build
 ```

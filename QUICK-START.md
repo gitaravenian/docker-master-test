@@ -12,7 +12,7 @@ This guide provides the essential steps to get the application up and running qu
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/berdjds/testing-docker.git
+git clone https://github.com/gitaravenian/docker-master-test.git
 cd testing-docker
 ```
 

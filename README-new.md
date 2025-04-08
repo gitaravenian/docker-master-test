@@ -14,7 +14,7 @@ This project demonstrates a complete web application architecture using:
 
 ```bash
 # Clone the repository
-git clone https://github.com/berdjds/testing-docker.git
+git clone https://github.com/gitaravenian/docker-master-test.git
 cd testing-docker
 
 # Start the application
