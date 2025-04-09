@@ -16,7 +16,7 @@ export default function AddProductPage() {
     setError("");
 
     try {
-      const response = await axios.post(`http://89.116.25.109/api/products/add`, { name });
+      const response = await axios.post(`/api/products/add`, { name });
       if (response.status === 201) {
         router.push("/products");
         router.refresh();
