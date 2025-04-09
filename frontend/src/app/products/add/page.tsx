@@ -18,7 +18,7 @@ export default function AddProductPage() {
     console.log("🧪 Submitting product with name:", name);
   
     try {
-      const response = await axios.post(`http://89.116.25.109/api/products`, { name });
+      const response = await axios.post(`http://89.116.25.109/api/products/add`, { name });
   
       console.log("🌐 Response received:");
       console.log("➡️ Status:", response.status);
