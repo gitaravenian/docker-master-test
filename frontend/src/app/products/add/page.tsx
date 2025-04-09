@@ -14,20 +14,40 @@ export default function AddProductPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
-
+  
+    console.log("🧪 Submitting product with name:", name);
+  
     try {
       const response = await axios.post(`/api/products/add`, { name });
+  
+      console.log("🌐 Response received:");
+      console.log("➡️ Status:", response.status);
+      console.log("📦 Data:", response.data);
+  
       if (response.status === 201) {
+        console.log("✅ Product added successfully! Redirecting...");
         router.push("/products");
         router.refresh();
+      } else {
+        console.warn("⚠️ Unexpected status code:", response.status);
       }
-    } catch (err) {
+    } catch (err: any) {
+      console.error("❌ Error during product submission:");
+      if (err.response) {
+        console.error("🔻 Response error:", err.response.data);
+        console.error("📉 Status:", err.response.status);
+      } else if (err.request) {
+        console.error("📡 No response received. Request was:", err.request);
+      } else {
+        console.error("💥 Request setup error:", err.message);
+      }
       setError("Failed to add product");
-      console.error(err);
     } finally {
       setLoading(false);
+      console.log("⏹️ Done handling product submission.");
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">

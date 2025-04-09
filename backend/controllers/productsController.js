@@ -7,11 +7,16 @@ export const getProducts = async (req, res) => {
 };
 
 export const addProduct = async (req, res) => {
+    console.log('📦 addProduct controller called');
+    console.log('📦 Request body:', req.body);
+  
     try {
-        const dto = new ProductDTO(req.body);
-        const product = await createProduct(dto.name);
-        res.status(201).json(product);
-    } catch (err) {
-        res.status(400).json({ error: err.message });
+      const newProduct = await createProduct(req.body.name);
+      console.log('✅ Product created:', newProduct);
+      res.status(201).json(newProduct);
+    } catch (error) {
+      console.error('❌ Error in addProduct:', error.message);
+      res.status(500).json({ error: 'Failed to add product' });
     }
-};
+  };
+  

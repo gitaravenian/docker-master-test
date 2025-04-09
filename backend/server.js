@@ -32,8 +32,16 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'healthy' });
 });
 
+app.use((req, res, next) => {
+  console.log(`[REQUEST] ${req.method} ${req.originalUrl}`);
+  next();
+});
+
 // Routes
 app.use('/api/products', productRoutes);
+
+console.log('✅ Mounted product routes at /api/products');
+
 
 // Error handling
 app.use(errorHandler);

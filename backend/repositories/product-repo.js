@@ -6,7 +6,11 @@ export const getAllProducts = async () => {
 };
 
 export const createProduct = async (name) => {
-  return prisma.product.create({
+  console.log('📄 Creating product with name:', name);
+  const product = await prisma.product.create({
     data: { name },
   });
+  console.log('✅ Prisma created:', product);
+  return product;
 };
+
