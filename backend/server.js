@@ -1,59 +1,80 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
-import productRoutes from './routes/product.js';
-import { errorHandler } from './middleware/errorHandler.js';
-import { PrismaClient } from '@prisma/client';
+import express from "express";
+import nodemailer from "nodemailer";
+import cors from "cors";
+import helmet from "helmet";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import fs from "fs";
+import path from "path";
+import messageRoutes from "./routes/messages.js";
+import authRoutes from "./routes/auth.js";
+import blogRoutes from "./routes/blog.js";
 
+// Load environment variables
 dotenv.config();
 
 const app = express();
-const prisma = new PrismaClient();
 
-// Security middleware
-app.use(helmet());
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
+// Configure middleware
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
-app.use(express.json());
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
-});
-app.use(limiter);
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'healthy' });
-});
-
+// Add request logging middleware
 app.use((req, res, next) => {
-  console.log(`[REQUEST] ${req.method} ${req.originalUrl}`);
+  console.log(`[Server] ${req.method} request to: ${req.url}`);
+  console.log('[Server] Origin:', req.headers.origin);
   next();
 });
 
-// Routes
-app.use('/api/products', productRoutes);
+// Configure CORS - only allow frontend URL (port 3000)
+const allowedOrigins = ['http://localhost:3000'];
+console.log('[Server] Allowed CORS origins:', allowedOrigins);
 
-console.log('✅ Mounted product routes at /api/products');
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
+// Parse cookies
+app.use(cookieParser());
 
-// Error handling
-app.use(errorHandler);
+// Parse JSON requests
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Graceful shutdown
-process.on('SIGTERM', async () => {
-  console.log('SIGTERM signal received: closing HTTP server');
-  await prisma.$disconnect();
-  process.exit(0);
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    time: new Date().toISOString(),
+    cors: {
+      enabled: true,
+      allowedOrigins
+    }
+  });
 });
 
-const PORT = process.env.PORT || 5000;
+// Use the message routes for contact form submissions
+app.use('/api/contact', messageRoutes);
+
+// Mount auth routes
+app.use('/api/auth', authRoutes);
+
+// Mount blog routes
+app.use('/api/blog', blogRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('[Server] Error:', err);
+  res.status(500).json({ error: err.message });
+});
+
+// Start the server
+const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`[Server] Server running on port ${PORT}`);
+  console.log(`[Server] CORS enabled for:`, allowedOrigins);
 });

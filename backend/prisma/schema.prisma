@@ -1,31 +1,52 @@
-// This is your Prisma schema file
-datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
-model Product {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String?
-  price       Float
-  stock       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "foreignKeys"
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String @unique @db.VarChar(100)
+  posts Post[]
+}
+
+model Post {
+  id         Int      @id @default(autoincrement())
+  title      String   @db.VarChar(150)
+  content    String   @db.Text
+  slug       String   @unique @db.VarChar(191)
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  image      String   @db.VarChar(150)
+  published  Boolean  @default(false)
+  author     User     @relation(fields: [authorId], references: [id])
+  authorId   Int
+
+  @@index([authorId])
+  @@index([categoryId])
+}
+
+model Submission {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(50)
+  email      String   @db.VarChar(50)
+  message    String   @db.Text
+  created_at DateTime @default(now())
+  subject    String?  @db.VarChar(50)
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  name      String?
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(150)
+  email      String   @unique @db.VarChar(191)
+  password   String   @db.VarChar(150)
+  role       Role     @default(USER)
+  created_at DateTime @default(now())
+  posts      Post[]
 }
 
 enum Role {
